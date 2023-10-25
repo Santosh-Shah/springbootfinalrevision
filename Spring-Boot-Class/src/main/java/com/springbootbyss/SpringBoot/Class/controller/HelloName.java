@@ -7,6 +7,6 @@ import org.springframework.web.bind.annotation.RestController;
 public class HelloName {
     @GetMapping("/")
     public String printSantosh() {
-        return "My Name is Santosh Shah \n What is you name?";
+        return "My Name is Ram Shah \n What is you name?";
     }
 }
