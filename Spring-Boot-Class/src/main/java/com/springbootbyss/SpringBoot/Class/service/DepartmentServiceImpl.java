@@ -38,23 +38,40 @@ public class DepartmentServiceImpl implements DepartmentService {
 
     @Override
     public Department updateDepartmentById(Long id, Department department) {
-        Department dbDep = departmentRepository.findById(id).get();
+        Optional<Department> optionalDepartment = departmentRepository.findById(id);
 
-        // check for name
-        if (Objects.nonNull(department.getDepartmentName()) && !"" .equalsIgnoreCase(department.getDepartmentName())) {
-            dbDep.setDepartmentName(department.getDepartmentName());
+        if (optionalDepartment.isPresent()) {
+            Department dbDep = optionalDepartment.get();
+
+            // Check and update departmentName
+            String newDepartmentName = department.getDepartmentName();
+            if (newDepartmentName != null && !newDepartmentName.isEmpty()) {
+                dbDep.setDepartmentName(newDepartmentName);
+            }
+
+            // Check and update departmentAddress
+            String newDepartmentAddress = department.getDepartmentAddress();
+            if (newDepartmentAddress != null && !newDepartmentAddress.isEmpty()) {
+                dbDep.setDepartmentAddress(newDepartmentAddress);
+            }
+
+            // Check and update departmentCode
+            String newDepartmentCode = department.getDepartmentCode();
+            if (newDepartmentCode != null && !newDepartmentCode.isEmpty()) {
+                dbDep.setDepartmentCode(newDepartmentCode);
+            }
+
+            return departmentRepository.save(dbDep);
+        } else {
+            // Handle the case where the department with the given ID is not found
+            return null; // or throw an exception, or return an appropriate response
         }
 
-        // for department address
-        if (Objects.nonNull(department.getDepartmentAddress()) && !"" .equalsIgnoreCase(department.getDepartmentAddress())) {
-            dbDep.setDepartmentAddress(department.getDepartmentAddress());
-        }
-
-        // for department code
-        if (Objects.nonNull(department.getDepartmentCode()) && !"" .equalsIgnoreCase(department.getDepartmentCode())) {
-            dbDep.setDepartmentCode(department.getDepartmentCode());
-        }
-
-        return departmentRepository.save(dbDep);
     }
+
+    @Override
+    public Department fetchDepartmentByName(String name) {
+        return departmentRepository.findByDepartmentNameIgnoreCase(name);
+    }
+
 }
