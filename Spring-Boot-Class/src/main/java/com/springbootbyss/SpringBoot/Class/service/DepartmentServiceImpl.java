@@ -1,6 +1,7 @@
 package com.springbootbyss.SpringBoot.Class.service;
 
 import com.springbootbyss.SpringBoot.Class.entity.Department;
+import com.springbootbyss.SpringBoot.Class.error.DepartmentNotFoundException;
 import com.springbootbyss.SpringBoot.Class.repository.DepartmentRepository;
 import org.springframework.beans.factory.ObjectFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,8 +28,12 @@ public class DepartmentServiceImpl implements DepartmentService {
     }
 
     @Override
-    public Optional<Department> fetchDepartmentById(Long id) {
-        return departmentRepository.findById(id);
+    public Optional<Department> fetchDepartmentById(Long id) throws DepartmentNotFoundException {
+        Optional<Department> optionalDepartment = departmentRepository.findById(id);
+        if (optionalDepartment.isEmpty()) {
+            throw new DepartmentNotFoundException("Department not found");
+        }
+        return optionalDepartment;
     }
 
     @Override

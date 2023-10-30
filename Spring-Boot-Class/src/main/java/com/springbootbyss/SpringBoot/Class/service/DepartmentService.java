@@ -1,6 +1,7 @@
 package com.springbootbyss.SpringBoot.Class.service;
 
 import com.springbootbyss.SpringBoot.Class.entity.Department;
+import com.springbootbyss.SpringBoot.Class.error.DepartmentNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -12,7 +13,7 @@ public interface DepartmentService {
 
     public List<Department> fetchDepartmentList();
 
-    public Optional<Department> fetchDepartmentById(Long id);
+    public Optional<Department> fetchDepartmentById(Long id) throws DepartmentNotFoundException;
 
     public void deleteDepartmentById(Long id);
 
